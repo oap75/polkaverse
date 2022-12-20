@@ -5,6 +5,7 @@ on:
       - staging
       - main
 
+
 jobs:
   staging_deploy:
     name: staging-deploy
