@@ -61,7 +61,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      - if: ${{ github.ref == 'refs/heads/master' }}
+      - if: ${{ github.ref == 'refs/heads/main' }}
         name: Build production image
         uses: docker/build-push-action@v3
         with:
@@ -111,7 +111,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN_STAGING }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_STAGING }}
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 c7e84602-9029-40ed-9f95-6c113f6693ee
 
       - name: Update deploy file
         run: TAG=${{ env.name }}-$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|dappforce/subsocial-web-app:'${TAG}'|' $GITHUB_WORKSPACE/deployment/base/deployment.yaml
@@ -126,7 +126,7 @@ jobs:
     name: pro-deploy
     needs: front_build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout main
         uses: actions/checkout@v3
@@ -142,7 +142,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN_PROD }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_PROD }}
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 a4862333-a4d0-4e2c-b688-fcb90312d14e
 
       - name: Update deploy file
         run: TAG=${{ env.name }}-$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|dappforce/subsocial-web-app:'${TAG}'|' $GITHUB_WORKSPACE/deployment/base/deployment.yaml
@@ -163,7 +163,7 @@ jobs:
     name: bk-prod-deploy
     needs: front_build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout main
         uses: actions/checkout@v3
